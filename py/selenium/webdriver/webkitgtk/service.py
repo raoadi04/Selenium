@@ -14,7 +14,9 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-import typing
+from typing import List
+from typing import Mapping
+from typing import Optional
 
 from selenium.webdriver.common import service
 
@@ -36,12 +38,12 @@ class Service(service.Service):
         self,
         executable_path: str = DEFAULT_EXECUTABLE_PATH,
         port: int = 0,
-        log_path: typing.Optional[str] = None,
-        service_args: typing.Optional[typing.List[str]] = None,
-        env: typing.Optional[typing.Mapping[str, str]] = None,
+        log_path: Optional[str] = None,
+        service_args: Optional[List[str]] = None,
+        env: Optional[Mapping[str, str]] = None,
         **kwargs,
     ):
-        self.service_args = service_args or []
+        self._service_args = service_args or []
         log_file = open(log_path, "wb") if log_path else None
         super().__init__(
             executable_path=executable_path,
@@ -51,5 +53,15 @@ class Service(service.Service):
             **kwargs,
         )  # type: ignore
 
-    def command_line_args(self) -> typing.List[str]:
-        return ["-p", f"{self.port}"] + self.service_args
+    def command_line_args(self) -> List[str]:
+        return ["-p", f"{self.port}"] + self._service_args
+
+    @property
+    def service_args(self) -> List[str]:
+        return self._service_args
+
+    @service_args.setter
+    def service_args(self, value: List[str]):
+        if not isinstance(value, List):
+            raise TypeError("service args must be a List of strings")
+        self._service_args = value
