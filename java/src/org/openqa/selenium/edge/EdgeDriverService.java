@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriverException;
@@ -276,6 +277,8 @@ public class EdgeDriverService extends DriverService {
 
     @Override
     protected List<String> createArgs() {
+      Locale.setDefault(Locale.US);
+
       List<String> args = new ArrayList<>();
       args.add(String.format("--port=%d", getPort()));
 
