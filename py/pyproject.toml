@@ -34,6 +34,11 @@ dependencies = [
     "websocket-client~=1.8",
     ]
 
+[tool.setuptools.packages.find]
+include = ["selenium*"]
+exclude = ["test*"]
+namespace = false
+
 [project.urls]
 Repository = "https://github.com/SeleniumHQ/selenium/"
 BugTracker = "https://github.com/SeleniumHQ/selenium/issues"
